@@ -45,6 +45,7 @@ import tachiyomi.presentation.core.components.material.padding
 import tachiyomi.presentation.core.i18n.stringResource
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
+import java.io.File
 
 @Composable
 fun SubtitleSettingsSheet(
@@ -156,7 +157,7 @@ fun SubtitlePreview(
     backgroundColor: Color,
 ) {
     val storageManager: StorageManager = Injekt.get()
-    val tempFileManager: UniFileTempFileManager = UniFileTempFileManager(LocalContext.current)
+    val tempFileManager = UniFileTempFileManager(LocalContext.current)
     val fontsDir = storageManager.getFontsDirectory()
     val fontMap = fontsDir?.listFiles()?.filter { file ->
         file.extension!!.equals("ttf", true) ||
@@ -168,8 +169,8 @@ fun SubtitlePreview(
     val fontFile = fontMap.keys.firstOrNull { it.contains(font, true) }
         ?.let {
             Typeface.createFromFile(fontMap[it]?.let { fontFile -> tempFileManager.createTempFile(fontFile) })
-        } ?: Typeface.SANS_SERIF
-
+        } ?: Typeface.createFromAsset(LocalContext.current.assets, "subfont.ttf")
+            // ^ Use the font available in mpv-android's assets
     Box(
         modifier = Modifier
             .padding(vertical = MaterialTheme.padding.medium)
