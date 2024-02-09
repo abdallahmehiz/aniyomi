@@ -60,7 +60,6 @@ class CurrentChapter(
             CurrentChapterComposable(
                 chapter = chapter,
                 modifier = Modifier
-                    .clickable { onClick() }
                     .padding(end = MaterialTheme.padding.large)
                     .wrapContentSize(Alignment.CenterStart),
             )
@@ -75,6 +74,7 @@ class CurrentChapter(
         Box(
             modifier = modifier
                 .clip(RoundedCornerShape(25))
+                .clickable { onClick() }
                 .background(MaterialTheme.colorScheme.background.copy(alpha = 0.6F))
                 .padding(horizontal = MaterialTheme.padding.medium, vertical = MaterialTheme.padding.small),
         ) {
